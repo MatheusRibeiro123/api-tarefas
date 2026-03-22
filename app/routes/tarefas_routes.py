@@ -1,0 +1,60 @@
+from flask import Blueprint,request,jsonify
+from app.models.tarefas import Tarefa
+from app.database import db
+task_bp = Blueprint("task",__name__,url_prefix="/task")
+from app.models.usuario import Usuario
+
+#----------ROTAS DE TAREFAS---------------
+
+#CRIAR TAREFA
+@task_bp.route("/tarefas",methods = ["POST"])
+def criar_tarefa():
+
+    dados = request.json
+
+    if not dados:
+        return jsonify({"erro":"Dados não enviados"}),400
+   
+    titulo = dados.get("titulo")
+    descricao = dados.get("descricao")
+    status = dados.get("status")
+    data_criacao = dados.get("data_criacao")
+    usuario_id = dados.get("usuario_id")
+
+    if not titulo or not status or not usuario_id:
+        return jsonify({"erro":"Titulo, status e id do usuario são obrigatorios!"}),400
+    
+    tarefa = Tarefa(
+        titulo = titulo,
+        descricao = descricao,
+        status = status,
+        data_criacao = data_criacao,
+        usuario_id = usuario_id
+        )
+
+    db.session.add(tarefa)
+    db.session.commit()
+
+    return jsonify({tarefa.to_dict()}),201
+
+#listar todas as tarefas do usuario
+
+@task_bp.route("/tarefas/usuario/<int:id>", methods = ["GET"])
+def listar_tarefas(id):
+    
+    usuario= Usuario.query.get(id)
+    tarefas = Tarefa.query.filter_by(usuario_id=id).all()
+
+    if not usuario:
+        return jsonify({"erro":"usuario não existe"}),404
+    
+    if not tarefas:
+        return jsonify({"mensagem":"este usuario não tem tarefas cadastradas!"}) ,200
+    
+    return jsonify([tarefa.to_dict() for tarefa in tarefas]), 200
+
+    
+    
+
+    
+    
