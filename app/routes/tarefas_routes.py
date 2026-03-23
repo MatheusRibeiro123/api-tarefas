@@ -43,15 +43,34 @@ def criar_tarefa():
 def listar_tarefas(id):
     
     usuario= Usuario.query.get(id)
-    tarefas = Tarefa.query.filter_by(usuario_id=id).all()
-
+    
     if not usuario:
         return jsonify({"erro":"usuario não existe"}),404
+   
+    tarefas = Tarefa.query.filter_by(usuario_id=id).all()       
     
     if not tarefas:
         return jsonify({"mensagem":"este usuario não tem tarefas cadastradas!"}) ,200
     
     return jsonify([tarefa.to_dict() for tarefa in tarefas]), 200
+
+#listar tarefa especifica de um usuario
+
+@task_bp.route("/tarefas/usuario/<int:usuario_id>/tarefa/<int:tarefa_id>",methods = ["GET"])
+def listar_tarefa(usuario_id,tarefa_id):
+    usuario = Usuario.query.filter_by(id = usuario_id).first()
+    
+    if not usuario:
+        return jsonify({"erro":"usuario não existe!"}),404
+    
+    tarefa = Tarefa.query.filter_by(id = tarefa_id,usuario_id = usuario_id).first()
+
+    if not tarefa:
+        return jsonify({"erro":"Tarefa não existe!"}),404
+    
+    return jsonify(tarefa.to_dict()),200
+
+
 
     
     
