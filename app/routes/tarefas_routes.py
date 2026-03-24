@@ -97,6 +97,26 @@ def editar_tarefa(usuario_id,tarefa_id):
 
     return jsonify(tarefa.to_dict()), 200
 
+    
+    #Deletar tarefa
+
+@task_bp.route("/tarefas/usuario/<int:usuario_id>/tarefa/<int:tarefa_id>",methods = ["DELETE"])
+def deletar_tarefa(usuario_id,tarefa_id):
+   
+   tarefa = Tarefa.query.filter_by(id = tarefa_id, usuario_id = usuario_id).first()
+
+   if not tarefa:
+       return jsonify({"erro":"Tarefa não existe!"}),404
+   
+   db.session.delete(tarefa)
+   db.session.commit()
+
+   return jsonify({"mensagem":"Tarefa deletada com sucesso!"}),200
+   
+
+    
+
+
 
 
     
