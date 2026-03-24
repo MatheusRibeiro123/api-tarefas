@@ -70,6 +70,33 @@ def listar_tarefa(usuario_id,tarefa_id):
     
     return jsonify(tarefa.to_dict()),200
 
+# editar uma tarefa
+
+@task_bp.route("/tarefas/usuario/<int:usuario_id>/tarefa/<int:tarefa_id>", methods = ["PUT"])
+def editar_tarefa(usuario_id,tarefa_id):
+    dados = request.json
+
+    if not dados:
+        return jsonify({"erro":"Dados não enviados!"}),400
+    
+    usuario = Usuario.query.filter_by(id = usuario_id).first()
+
+    if not usuario:
+        return jsonify({"erro":"Usuario não existe!"}),404
+    
+    tarefa = Tarefa.query.filter_by(id = tarefa_id,usuario_id = usuario_id).first()
+
+    if not tarefa:
+        return jsonify({"erro":"Tarefa não existe!"}),404
+    
+    tarefa.titulo = dados.get("titulo",tarefa.titulo)
+    tarefa.descricao = dados.get("descricao",tarefa.descricao)
+    tarefa.status = dados.get("status",tarefa.status)
+    
+    db.session.commit()
+
+    return jsonify(tarefa.to_dict()), 200
+
 
 
     
