@@ -21,8 +21,8 @@ def criar_tarefa():
     data_criacao = dados.get("data_criacao")
     usuario_id = dados.get("usuario_id")
 
-    if not titulo or not status or not usuario_id:
-        return jsonify({"erro":"Titulo, status e id do usuario são obrigatorios!"}),400
+    if not titulo  or not usuario_id:
+        return jsonify({"erro":"Titulo e id do usuario são obrigatorios!"}),400
     
     tarefa = Tarefa(
         titulo = titulo,
@@ -35,7 +35,7 @@ def criar_tarefa():
     db.session.add(tarefa)
     db.session.commit()
 
-    return jsonify({tarefa.to_dict()}),201
+    return jsonify(tarefa.to_dict()),201
 
 #listar todas as tarefas do usuario
 

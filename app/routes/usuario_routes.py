@@ -58,6 +58,17 @@ def login():
         return jsonify({"sucesso":"Login realizado com sucesso"}) ,200
     
     return jsonify({"erro":"Usuario ou senha invalidos"}), 401
+
+#listar usuarios
+@auth_bp.route("/usuarios",methods = ["GET"])
+def listar_usuarios():
+    
+    lista = Usuario.query.all()
+
+    if not lista:
+        return jsonify({"erro":"Não existe usuarios cadastrados!"}),200
+    
+    return jsonify([usuario.to_dict() for usuario in lista]),200
         
 
     

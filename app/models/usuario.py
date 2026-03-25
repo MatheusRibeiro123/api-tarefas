@@ -10,6 +10,15 @@ class Usuario(db.Model):
     senha_hash = db.Column(db.String(300), nullable=False)
     tarefas = db.relationship("Tarefa",backref = "usuario",lazy = True)
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "nome":self.nome,
+            "email":self.email,
+            "tarefas":[tarefa.to_dict() for tarefa in self.tarefas]
+
+        }
+    
     def definir_senha(self,senha):
         self.senha_hash = generate_password_hash(senha)
 
