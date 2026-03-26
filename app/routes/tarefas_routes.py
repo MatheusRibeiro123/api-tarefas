@@ -3,7 +3,7 @@ from app.models.tarefas import Tarefa
 from app.database import db
 task_bp = Blueprint("task",__name__,url_prefix="/task")
 from app.models.usuario import Usuario
-
+from flask_jwt_extended import jwt_required,get_jwt_identity
 #----------ROTAS DE TAREFAS---------------
 
 #CRIAR TAREFA

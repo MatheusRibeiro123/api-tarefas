@@ -56,7 +56,14 @@ def login():
     usuario = Usuario.query.filter_by(email = email).first()
 
     if usuario and usuario.verificar_senha(senha):
-        return jsonify({"sucesso":"Login realizado com sucesso"}) ,200
+        access_token = create_access_token(identity=usuario.id,
+                                           additional_claims={"email":usuario.email})
+
+    return jsonify({
+        "sucesso":"Login realizado com sucesso",
+        "access_token": access_token
+    })
+       
     
     return jsonify({"erro":"Usuario ou senha invalidos"}), 401
 
