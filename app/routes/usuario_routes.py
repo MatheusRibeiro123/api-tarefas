@@ -61,9 +61,7 @@ def login():
 
     return jsonify({
         "sucesso":"Login realizado com sucesso",
-        "access_token": access_token
-    })
-       
+        "access_token": access_token})
     
     return jsonify({"erro":"Usuario ou senha invalidos"}), 401
 

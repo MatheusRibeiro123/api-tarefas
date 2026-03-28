@@ -8,7 +8,7 @@ class Tarefa(db.Model):
     titulo = db.Column(db.String(100),nullable = False)
     descricao = db.Column (db.String(100),nullable = True)
     status = db.Column(db.Boolean, default = False, nullable = False)
-    data_criacao = db.Column(db.DateTime, default = datetime.now)
+    data_criacao = db.Column(db.DateTime, default = datetime.utcnow)
     usuario_id = db.Column(db.Integer,db.ForeignKey("usuarios.id"),nullable = False)
 
 
