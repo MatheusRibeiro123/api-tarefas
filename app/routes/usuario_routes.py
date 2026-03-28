@@ -58,7 +58,7 @@ def login():
     if not usuario or not usuario.verificar_senha(senha):
         return jsonify({"error":"Usuario ou senha invalidos!"}),401
     
-    access_token= create_access_token(identity=usuario.id,
+    access_token= create_access_token(identity=str(usuario.id),
                                       additional_claims={"email":usuario.email})
        
 
@@ -74,7 +74,7 @@ def login():
 @jwt_required()
 def get_usuario_logado():
 
-    usuario_id = get_jwt_identity()
+    usuario_id = int(get_jwt_identity())
 
     usuario = Usuario.query.get(usuario_id)
 

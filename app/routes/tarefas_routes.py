@@ -24,7 +24,7 @@ def criar_tarefa():
     if not titulo :
         return jsonify({"error":"Titulo é obrigatorio!"}),400
     
-    usuario_id = get_jwt_identity()
+    usuario_id = int(get_jwt_identity())
     
     tarefa = Tarefa(
         titulo = titulo,
@@ -44,7 +44,7 @@ def criar_tarefa():
 @jwt_required()
 def listar_tarefas():
     
-    usuario_id=get_jwt_identity()
+    usuario_id=int(get_jwt_identity())
 
     tarefas = Tarefa.query.filter_by(usuario_id=usuario_id).all()       
     
@@ -59,7 +59,7 @@ def listar_tarefas():
 @jwt_required()
 def listar_tarefa(tarefa_id):
    
-    usuario_id=get_jwt_identity()
+    usuario_id=int(get_jwt_identity())
 
     tarefa = Tarefa.query.filter_by(id = tarefa_id,usuario_id = usuario_id).first()
 
@@ -78,7 +78,7 @@ def editar_tarefa(tarefa_id):
     if not dados:
         return jsonify({"error":"Dados não enviados!"}),400
     
-    usuario_id = get_jwt_identity()
+    usuario_id = int(get_jwt_identity())
 
     tarefa = Tarefa.query.filter_by(id = tarefa_id,usuario_id = usuario_id).first()
 
@@ -100,7 +100,7 @@ def editar_tarefa(tarefa_id):
 @jwt_required()
 def deletar_tarefa(tarefa_id):
    
-   usuario_id = get_jwt_identity()
+   usuario_id = int(get_jwt_identity())
    
    tarefa = Tarefa.query.filter_by(id = tarefa_id, usuario_id = usuario_id).first()
 
