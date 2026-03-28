@@ -49,7 +49,7 @@ def listar_tarefas():
     tarefas = Tarefa.query.filter_by(usuario_id=usuario_id).all()       
     
     if not tarefas:
-        return jsonify({"message":"este usuario não tem tarefas cadastradas!"}) ,200
+        return jsonify({"message":"Este usuario não tem tarefas cadastradas!"}) ,200
     
     return jsonify([tarefa.to_dict() for tarefa in tarefas]), 200
 
@@ -111,15 +111,3 @@ def deletar_tarefa(tarefa_id):
    db.session.commit()
 
    return jsonify({"message":"Tarefa deletada com sucesso!"}),200
-   
-
-    
-
-
-
-
-    
-    
-
-    
-    
