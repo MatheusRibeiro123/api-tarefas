@@ -20,9 +20,16 @@ form.addEventListener("submit", async function(event){
 
         const data = await response.json();
 
-        console.log(data);
+        //  verifica se login deu certo
+        if (response.ok) {
+            localStorage.setItem("token", data.access_token);
+            window.location.href = "tarefas.html";
+        } else {
+            alert("Email ou senha inválidos");
+        }
 
     } catch (error) {
         console.error("Erro:", error);
+        alert("Erro ao conectar com o servidor");
     }
 });
