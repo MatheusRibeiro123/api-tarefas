@@ -1,35 +1,69 @@
-const form = document.getElementById("form-login");
+const btnLogin = document.getElementById("btn-login");
+const inputEmail = document.getElementById("email");
+const inputSenha = document.getElementById("senha");
+const erroMsg = document.getElementById("erro-msg");
 
-form.addEventListener("submit", async function(event){
-    event.preventDefault();
+function setErro(msg) {
+  erroMsg.textContent = msg;
+  erroMsg.classList.add("visivel");
+  inputEmail.classList.add("erro");
+  inputSenha.classList.add("erro");
+}
 
-    const email = document.getElementById("email").value;
-    const senha = document.getElementById("senha").value;
+function limparErro() {
+  erroMsg.classList.remove("visivel");
+  inputEmail.classList.remove("erro");
+  inputSenha.classList.remove("erro");
+}
 
-    try {
-        const response = await fetch("http://localhost:5000/auth/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                email: email,
-                senha: senha
-            })
-        });
+function setCarregando(sim) {
+  btnLogin.disabled = sim;
+  btnLogin.classList.toggle("carregando", sim);
+}
 
-        const data = await response.json();
+async function fazerLogin() {
+  limparErro();
 
-        //  verifica se login deu certo
-        if (response.ok) {
-            localStorage.setItem("token", data.access_token);
-            window.location.href = "tarefas.html";
-        } else {
-            alert("Email ou senha inválidos");
-        }
+  const email = inputEmail.value.trim();
+  const senha = inputSenha.value;
 
-    } catch (error) {
-        console.error("Erro:", error);
-        alert("Erro ao conectar com o servidor");
+  if (!email || !senha) {
+    setErro("Preencha e-mail e senha.");
+    return;
+  }
+
+  setCarregando(true);
+
+  try {
+    const response = await fetch("http://127.0.0.1:5000/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, senha })
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      localStorage.setItem("token", data.access_token);
+      window.location.href = "tarefas.html";
+    } else {
+      setErro("E-mail ou senha inválidos.");
+      inputSenha.value = "";
+      inputSenha.focus();
     }
-});
+
+  } catch (error) {
+    console.error("Erro:", error);
+    setErro("Não foi possível conectar ao servidor.");
+  } finally {
+    setCarregando(false);
+  }
+}
+
+btnLogin.addEventListener("click", fazerLogin);
+
+inputEmail.addEventListener("keydown", e => e.key === "Enter" && inputSenha.focus());
+inputSenha.addEventListener("keydown", e => e.key === "Enter" && fazerLogin());
+
+inputEmail.addEventListener("input", limparErro);
+inputSenha.addEventListener("input", limparErro);

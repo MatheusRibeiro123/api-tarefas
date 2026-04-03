@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
+  <title>Cadastro</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -36,7 +36,6 @@
       overflow: hidden;
     }
 
-    /* GLOW DE FUNDO */
     body::before {
       content: '';
       position: fixed;
@@ -49,7 +48,6 @@
       pointer-events: none;
     }
 
-    /* GRADE SUTIL */
     body::after {
       content: '';
       position: fixed;
@@ -61,7 +59,7 @@
       pointer-events: none;
     }
 
-    .login-wrapper {
+    .register-wrapper {
       width: 100%;
       max-width: 400px;
       position: relative;
@@ -69,7 +67,6 @@
       animation: fadeUp 0.5s ease both;
     }
 
-    /* LOGO / MARCA */
     .brand {
       text-align: center;
       margin-bottom: 36px;
@@ -104,8 +101,7 @@
       font-weight: 300;
     }
 
-    /* CARD */
-    .login-card {
+    .register-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -151,7 +147,6 @@
       background: var(--red-dim);
     }
 
-    /* MENSAGEM DE ERRO */
     .erro-msg {
       display: none;
       font-size: 13px;
@@ -165,8 +160,20 @@
 
     .erro-msg.visivel { display: block; }
 
-    /* BOTÃO */
-    .btn-login {
+    .sucesso-msg {
+      display: none;
+      font-size: 13px;
+      color: var(--accent);
+      margin-top: 6px;
+      padding: 10px 14px;
+      background: var(--accent-dim);
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(200,240,96,0.2);
+    }
+
+    .sucesso-msg.visivel { display: block; }
+
+    .btn-register {
       width: 100%;
       margin-top: 8px;
       background: var(--accent);
@@ -187,15 +194,10 @@
       gap: 8px;
     }
 
-    .btn-login:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
-    .btn-login:active { transform: translateY(0); }
+    .btn-register:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
+    .btn-register:active { transform: translateY(0); }
+    .btn-register:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    .btn-login:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    /* SPINNER */
     .spinner {
       width: 16px;
       height: 16px;
@@ -206,10 +208,9 @@
       display: none;
     }
 
-    .btn-login.carregando .spinner { display: block; }
-    .btn-login.carregando .btn-text { display: none; }
+    .btn-register.carregando .spinner { display: block; }
+    .btn-register.carregando .btn-text { display: none; }
 
-    /* FOOTER DO CARD */
     .card-footer {
       margin-top: 20px;
       text-align: center;
@@ -237,15 +238,20 @@
 </head>
 <body>
 
-  <div class="login-wrapper">
+  <div class="register-wrapper">
 
     <div class="brand">
       <div class="brand-icon">✦</div>
-      <h1>Minhas <span>Tarefas</span></h1>
-      <p>Entre para acessar suas tarefas</p>
+      <h1>Criar <span>Conta</span></h1>
+      <p>Cadastre-se para começar a organizar suas tarefas</p>
     </div>
 
-    <div class="login-card">
+    <div class="register-card">
+
+      <div class="field">
+        <label for="nome">Nome</label>
+        <input type="text" id="nome" placeholder="Seu nome completo" autocomplete="name">
+      </div>
 
       <div class="field">
         <label for="email">E-mail</label>
@@ -254,24 +260,30 @@
 
       <div class="field">
         <label for="senha">Senha</label>
-        <input type="password" id="senha" placeholder="••••••••" autocomplete="current-password">
+        <input type="password" id="senha" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
       </div>
 
-      <div class="erro-msg" id="erro-msg">E-mail ou senha inválidos.</div>
+      <div class="field">
+        <label for="confirmar-senha">Confirmar Senha</label>
+        <input type="password" id="confirmar-senha" placeholder="Repita a senha" autocomplete="new-password">
+      </div>
 
-      <button class="btn-login" id="btn-login">
-        <span class="btn-text">Entrar</span>
+      <div class="erro-msg" id="erro-msg"></div>
+      <div class="sucesso-msg" id="sucesso-msg"></div>
+
+      <button class="btn-register" id="btn-register">
+        <span class="btn-text">Criar Conta</span>
         <div class="spinner"></div>
       </button>
 
       <div class="card-footer">
-        Não tem uma conta? <a href="registro.html">Registre-se</a>
+        Já tem uma conta? <a href="login.html">Entrar</a>
       </div>
 
     </div>
 
   </div>
 
-  <script src="login.js"></script>
+  <script src="registro.js"></script>
 </body>
 </html>

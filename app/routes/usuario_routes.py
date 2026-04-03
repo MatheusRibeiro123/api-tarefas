@@ -35,7 +35,14 @@ def register():
     db.session.add(usuario)
     db.session.commit()
 
-    return jsonify({"message":"Usuario criado com sucesso"}),201
+    # já gera o token na hora do cadastro
+    access_token = create_access_token(identity=str(usuario.id),
+                                       additional_claims={"email": usuario.email})
+
+    return jsonify({
+        "message": "Usuario criado com sucesso",
+        "access_token": access_token
+    }), 201
 
 #rota fazer login
 
