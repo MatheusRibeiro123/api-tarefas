@@ -6,6 +6,31 @@
   <title>Tarefas</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
+    .top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+#btn-logout {
+  background: rgba(200, 240, 96, 0.12);
+  border: 1px solid rgba(200, 240, 96, 0.4);
+  color: #c8f060;
+
+  padding: 8px 14px;
+  border-radius: 8px;
+
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#btn-logout:hover {
+  background: #c8f060;
+  color: #0d0d0f;
+  transform: translateY(-1px);
+}
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -78,11 +103,12 @@
 
     header h1 {
       font-family: 'Syne', sans-serif;
-      font-size: clamp(32px, 6vw, 48px);
+      font-size: clamp(36px, 6vw, 52px);
       font-weight: 800;
       line-height: 1.1;
       letter-spacing: -0.02em;
       color: var(--text);
+      margin-bottom: 8px;
     }
 
     header h1 span {
@@ -90,8 +116,9 @@
     }
 
     .header-sub {
-      margin-top: 10px;
-      font-size: 14px;
+      margin-top: 15px;
+      margin-bottom: 28px;
+      font-size: 18px;
       color: var(--text-sub);
       font-weight: 300;
     }
@@ -100,7 +127,7 @@
     .stats-bar {
       display: flex;
       gap: 12px;
-      margin-bottom: 32px;
+      margin-bottom: 40px;
       animation: fadeDown 0.5s 0.1s ease both;
     }
 
@@ -534,12 +561,16 @@
 
   <div class="app">
 
-    <!-- HEADER -->
-    <header>
-      <div class="header-label">Gerenciador</div>
-      <h1>Minhas <span>Tarefas</span></h1>
-      <p class="header-sub">Organize, acompanhe e conclua com facilidade.</p>
-    </header>
+    <!-- HEADER COM LOGOUT -->
+    <div class="top-bar">
+      <div>
+        <div class="header-label">Gerenciador</div>
+        <h1>Minhas <span>Tarefas</span></h1>
+      </div>
+      <button id="btn-logout">🚪 Sair</button>
+    </div>
+
+    <p class="header-sub">Organize, acompanhe e conclua com facilidade.</p>
 
     <!-- STATS -->
     <div class="stats-bar">

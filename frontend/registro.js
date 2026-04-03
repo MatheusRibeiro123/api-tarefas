@@ -21,7 +21,9 @@ function setSucesso(msg) {
 function limparMensagens() {
   erroMsg.classList.remove("visivel");
   sucessoMsg.classList.remove("visivel");
-  [inputNome, inputEmail, inputSenha, inputConfirmar].forEach(i => i.classList.remove("erro"));
+  [inputNome, inputEmail, inputSenha, inputConfirmar].forEach(i =>
+    i.classList.remove("erro")
+  );
 }
 
 function setCarregando(sim) {
@@ -68,22 +70,38 @@ async function fazerRegistro() {
   setCarregando(true);
 
   try {
+    // 🔹 REGISTRO
     const response = await fetch("http://127.0.0.1:5000/auth/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nome, email, senha })
-    });
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({ nome, email, senha })
+});
 
-    const data = await response.json();
+let data;
+try {
+  data = await response.json();
+} catch (e) {
+  console.log("Erro ao ler resposta");
+}
 
-    if (response.ok) {
-      localStorage.setItem("token", data.access_token);
-      setSucesso("Conta criada! Entrando...");
-      setTimeout(() => window.location.href = "frontend/tarefas.html", 800);
-    } else {
-      const msg = data.message || data.error || data.erro || "Erro ao criar conta.";
-      setErro(msg);
-    }
+console.log("RESPOSTA REGISTER:", data);
+
+if (response.ok && data?.access_token) {
+  localStorage.setItem("token", data.access_token);
+
+  setSucesso("Conta criada! Entrando...");
+
+  window.location.href = "tarefas.html";;
+
+} else {
+  console.log("ERRO REGISTER:", data);
+  const msg = data?.error || data?.message || "Erro ao criar conta.";
+  setErro(msg);
+}
+
+    
 
   } catch (error) {
     console.error("Erro:", error);
@@ -93,8 +111,13 @@ async function fazerRegistro() {
   }
 }
 
-btnRegister.addEventListener("click", fazerRegistro);
+// 🔥 EVENTO
+btnRegister.addEventListener("click", (e) => {
+  e.preventDefault();
+  fazerRegistro();
+});
 
+// ENTER
 inputNome.addEventListener("keydown", e => e.key === "Enter" && inputEmail.focus());
 inputEmail.addEventListener("keydown", e => e.key === "Enter" && inputSenha.focus());
 inputSenha.addEventListener("keydown", e => e.key === "Enter" && inputConfirmar.focus());

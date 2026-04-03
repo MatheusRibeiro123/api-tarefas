@@ -1,10 +1,18 @@
 // 🔹 pega token
 const token = localStorage.getItem("token");
 
-// 🔹 verifica login
+// 🔹 verifica login (SEM delay, sem bug)
 if (!token) {
-  showToast("Você precisa estar logado!", "error");
-  setTimeout(() => window.location.href = "login.html", 1500);
+  window.location.href = "login.html";
+}
+
+// 🔹 LOGOUT
+const btnLogout = document.getElementById("btn-logout");
+if (btnLogout) {
+  btnLogout.addEventListener("click", () => {
+    localStorage.removeItem("token");
+    window.location.href = "login.html";
+  });
 }
 
 // 🔹 elementos
@@ -48,19 +56,21 @@ function showToast(msg, tipo = "success") {
   setTimeout(() => toast.classList.remove("show"), 2800);
 }
 
-// 📊 ATUALIZA STATS
+// 📊 STATS
 function atualizarStats(tarefas) {
   const total = tarefas.length;
   const concluidas = tarefas.filter(t => t.status === "concluida").length;
   const pendentes = total - concluidas;
+
   statTotal.textContent = total;
   statPendente.textContent = pendentes;
   statConcluida.textContent = concluidas;
 }
 
-// 🎨 RENDERIZA LISTA
+// 🎨 RENDER
 function renderTarefas() {
   let filtradas = tarefasCache;
+
   if (filtroAtivo !== "todas") {
     filtradas = tarefasCache.filter(t => t.status === filtroAtivo);
   }
@@ -80,6 +90,7 @@ function renderTarefas() {
 
   filtradas.forEach((tarefa, i) => {
     const card = document.createElement("div");
+
     card.className = `task-card${tarefa.status === "concluida" ? " concluida" : ""}`;
     card.style.animationDelay = `${i * 0.04}s`;
 
@@ -102,41 +113,43 @@ function renderTarefas() {
     lista.appendChild(card);
   });
 
-  // eventos delegados
   lista.querySelectorAll(".btn-done").forEach(btn =>
     btn.addEventListener("click", () => concluirTarefa(btn.dataset.id)));
+
   lista.querySelectorAll(".btn-edit").forEach(btn =>
     btn.addEventListener("click", () => abrirModal(btn.dataset.id)));
+
   lista.querySelectorAll(".btn-delete").forEach(btn =>
     btn.addEventListener("click", () => deletarTarefa(btn.dataset.id)));
 }
 
-// escape html simples
+// escape
 function escHtml(str) {
-  return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  return String(str)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;");
 }
 
-// 🔹 CARREGAR TAREFAS
+// 🔹 CARREGAR
 async function carregarTarefas() {
   try {
     const response = await fetch("http://localhost:5000/task/tarefas", {
-      method: "GET",
       headers: { "Authorization": "Bearer " + token }
     });
 
-    if (!response.ok) throw new Error("Erro ao buscar tarefas");
+    if (!response.ok) throw new Error();
 
     tarefasCache = await response.json();
+
     atualizarStats(tarefasCache);
     renderTarefas();
 
   } catch (error) {
-    console.error("Erro:", error);
-    showToast("Sessão expirada. Redirecionando...", "error");
-    setTimeout(() => {
-      localStorage.removeItem("token");
-      window.location.href = "login.html";
-    }, 1500);
+    showToast("Sessão expirada.", "error");
+
+    localStorage.removeItem("token");
+    setTimeout(() => window.location.href = "login.html", 1000);
   }
 }
 
@@ -146,124 +159,94 @@ botao.addEventListener("click", async () => {
   const descricao = inputDescricao.value.trim();
 
   if (!titulo) {
-    showToast("Digite um título para a tarefa.", "error");
-    inputTitulo.focus();
+    showToast("Digite um título.", "error");
     return;
   }
-
-  botao.disabled = true;
-  botao.textContent = "Adicionando...";
 
   try {
     const response = await fetch("http://localhost:5000/task/tarefas", {
       method: "POST",
-      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+      },
       body: JSON.stringify({ titulo, descricao })
     });
 
     if (response.ok) {
       inputTitulo.value = "";
       inputDescricao.value = "";
-      showToast("Tarefa criada com sucesso! ✦");
+      showToast("Tarefa criada! ✦");
       await carregarTarefas();
     } else {
-      showToast("Erro ao criar tarefa.", "error");
+      showToast("Erro ao criar.", "error");
     }
-  } catch (error) {
-    console.error("Erro:", error);
+
+  } catch {
     showToast("Erro de conexão.", "error");
-  } finally {
-    botao.disabled = false;
-    botao.textContent = "+ Adicionar Tarefa";
   }
 });
 
-// ✏️ MODAL EDITAR
+// ✏️ MODAL
 function abrirModal(id) {
   tarefaEditando = tarefasCache.find(t => t.id == id);
   if (!tarefaEditando) return;
+
   modalTitulo.value = tarefaEditando.titulo;
   modalDescricao.value = tarefaEditando.descricao || "";
   modalOverlay.classList.add("open");
-  modalTitulo.focus();
 }
 
 modalCancel.addEventListener("click", () => modalOverlay.classList.remove("open"));
-modalOverlay.addEventListener("click", e => { if (e.target === modalOverlay) modalOverlay.classList.remove("open"); });
 
 modalSave.addEventListener("click", async () => {
-  const novoTitulo = modalTitulo.value.trim();
-  const novaDescricao = modalDescricao.value.trim();
-
-  if (!novoTitulo) {
-    showToast("Título não pode ser vazio.", "error");
-    return;
-  }
-
   try {
     const response = await fetch(`http://localhost:5000/task/tarefas/${tarefaEditando.id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
-      body: JSON.stringify({ titulo: novoTitulo, descricao: novaDescricao })
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+      },
+      body: JSON.stringify({
+        titulo: modalTitulo.value,
+        descricao: modalDescricao.value
+      })
     });
 
     if (response.ok) {
       modalOverlay.classList.remove("open");
-      showToast("Tarefa atualizada! ✦");
+      showToast("Atualizada! ✦");
       await carregarTarefas();
-    } else {
-      showToast("Erro ao editar tarefa.", "error");
     }
-  } catch (error) {
-    console.error("Erro:", error);
-    showToast("Erro de conexão.", "error");
-  }
+
+  } catch {}
 });
 
 // ✅ CONCLUIR
 async function concluirTarefa(id) {
-  try {
-    const response = await fetch(`http://localhost:5000/task/tarefas/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
-      body: JSON.stringify({ status: "concluida" })
-    });
+  await fetch(`http://localhost:5000/task/tarefas/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + token
+    },
+    body: JSON.stringify({ status: "concluida" })
+  });
 
-    if (response.ok) {
-      showToast("Tarefa concluída! ✦");
-      await carregarTarefas();
-    } else {
-      showToast("Erro ao concluir tarefa.", "error");
-    }
-  } catch (error) {
-    console.error("Erro:", error);
-  }
+  showToast("Concluída! ✦");
+  await carregarTarefas();
 }
 
 // ❌ DELETAR
 async function deletarTarefa(id) {
-  try {
-    const response = await fetch(`http://localhost:5000/task/tarefas/${id}`, {
-      method: "DELETE",
-      headers: { "Authorization": "Bearer " + token }
-    });
+  await fetch(`http://localhost:5000/task/tarefas/${id}`, {
+    method: "DELETE",
+    headers: { "Authorization": "Bearer " + token }
+  });
 
-    if (response.ok) {
-      showToast("Tarefa removida.");
-      await carregarTarefas();
-    } else {
-      showToast("Erro ao deletar tarefa.", "error");
-    }
-  } catch (error) {
-    console.error("Erro:", error);
-  }
+  showToast("Removida.");
+  await carregarTarefas();
 }
-
-// enter nos inputs
-inputTitulo.addEventListener("keydown", e => e.key === "Enter" && inputDescricao.focus());
-inputDescricao.addEventListener("keydown", e => e.key === "Enter" && botao.click());
-modalTitulo.addEventListener("keydown", e => e.key === "Enter" && modalDescricao.focus());
-modalDescricao.addEventListener("keydown", e => e.key === "Enter" && modalSave.click());
 
 // 🚀 iniciar
 carregarTarefas();
