@@ -8,6 +8,3 @@ app = create_app()
 with app.app_context():
     db.create_all()
 
-if __name__ == "__main__":
-    webbrowser.open("http://127.0.0.1:5500/frontend/login.html")
-    app.run(debug=True, use_reloader=False)
