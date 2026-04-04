@@ -4,6 +4,7 @@ from app.routes.usuario_routes import auth_bp
 from app.routes.tarefas_routes import task_bp
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
+from flask import render_template
 def create_app():
     app = Flask(__name__)
 
@@ -20,8 +21,8 @@ def create_app():
     app.register_blueprint(task_bp)
 
     @app.route("/")
-    def statusAPI():
-        return "API Funcionando"
+    def home():
+        return render_template("login.html")
 
     return app
 
