@@ -3,7 +3,7 @@ const token = localStorage.getItem("token");
 
 // 🔹 verifica login (SEM delay, sem bug)
 if (!token) {
-  window.location.href = "/login";
+  window.location.href = "/";
 }
 
 // 🔹 LOGOUT
@@ -11,7 +11,7 @@ const btnLogout = document.getElementById("btn-logout");
 if (btnLogout) {
   btnLogout.addEventListener("click", () => {
     localStorage.removeItem("token");
-    window.location.href = "/login";
+    window.location.href = "/";
   });
 }
 
@@ -149,7 +149,7 @@ async function carregarTarefas() {
     showToast("Sessão expirada.", "error");
 
     localStorage.removeItem("token");
-    setTimeout(() => window.location.href = "/login", 1000);
+    setTimeout(() => window.location.href = "/", 1000);
   }
 }
 
