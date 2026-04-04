@@ -3,12 +3,10 @@
 Aplicação completa de gerenciamento de tarefas com autenticação de usuários, desenvolvida com Flask no backend e interface web integrada para interação.
 
 🚀 Status do projeto
-
 ✅ Backend finalizado e funcional
 ✅ Frontend funcional (interface simples)
 🌐 Aplicação publicada online
 🏁 Projeto concluído (versão atual)
-
 🌍 Acesse o projeto
 
 👉 Link da aplicação:
@@ -35,12 +33,10 @@ A aplicação utiliza autenticação baseada em JWT (flask_jwt_extended).
 Login retorna um access_token
 Rotas protegidas com @jwt_required()
 Identificação do usuário via get_jwt_identity()
-
 ⚙️ Funcionalidades
 👤 Usuário
 ✅ Cadastro de usuário (/auth/register)
 ✅ Login (/auth/login)
-
 ✅ Obter usuário logado (/auth/me)
 📋 Tarefas
 ✅ Criar tarefa
@@ -60,14 +56,14 @@ O foco principal do projeto está na construção do backend e na lógica da apl
 
 🔗 Principais Rotas
 🔐 Autenticação
-POST /auth/register
-POST /auth/login
-GET /auth/me
+POST   /auth/register
+POST   /auth/login
+GET    /auth/me
 📋 Tarefas
-POST /task/tarefas
-GET /task/tarefas
-GET /task/tarefas/<id>
-PUT /task/tarefas/<id>
+POST   /task/tarefas
+GET    /task/tarefas
+GET    /task/tarefas/<id>
+PUT    /task/tarefas/<id>
 DELETE /task/tarefas/<id>
 🧠 Conceitos aplicados
 JWT (JSON Web Token)
@@ -98,9 +94,9 @@ https://api-tarefas-uwya.onrender.com
 ⚠️ O frontend é servido pelo Flask, não utilize Live Server.
 
 Clone o repositório:
-git clone https://github.com/MatheusRibeiro123/api-tarefas
+git clone https://github.com/MatheusRibeiro123/api-tarefas.git
 Acesse a pasta:
-cd seu-repo
+cd api-tarefas
 Crie e ative a virtualenv:
 python -m venv venv
 venv\Scripts\activate
@@ -121,7 +117,6 @@ Projeto estruturado com foco em backend, mas com frontend funcional integrado
 🔹 Paginação de tarefas
 🔹 Versão com frontend em React
 🔹 Migração para banco de dados em produção (PostgreSQL)
-
 👨‍💻 Autor
 
 Matheus Ribeiro
