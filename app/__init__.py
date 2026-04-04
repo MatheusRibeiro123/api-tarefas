@@ -23,6 +23,14 @@ def create_app():
     @app.route("/")
     def home():
         return render_template("login.html")
+    
+    @app.route("/registro")
+    def registro():
+        return render_template("registro.html")
+
+    @app.route("/tarefas")
+    def tarefas_page():
+        return render_template("tarefas.html")
 
     return app
 
