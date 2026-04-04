@@ -71,7 +71,7 @@ async function fazerRegistro() {
 
   try {
     // 🔹 REGISTRO
-    const response = await fetch("http://127.0.0.1:5000/auth/register", {
+    const response = await fetch("/auth/register", {
   method: "POST",
   headers: {
     "Content-Type": "application/json"
@@ -93,7 +93,7 @@ if (response.ok && data?.access_token) {
 
   setSucesso("Conta criada! Entrando...");
 
-  window.location.href = "tarefas.html";;
+  window.location.href = "/tarefas";;
 
 } else {
   console.log("ERRO REGISTER:", data);

@@ -35,7 +35,7 @@ async function fazerLogin() {
   setCarregando(true);
 
   try {
-    const response = await fetch("http://127.0.0.1:5000/auth/login", {
+    const response = await fetch("/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, senha })
@@ -45,7 +45,7 @@ async function fazerLogin() {
 
     if (response.ok) {
       localStorage.setItem("token", data.access_token);
-      window.location.href = "tarefas.html";
+      window.location.href = "/login";
     } else {
       setErro("E-mail ou senha inválidos.");
       inputSenha.value = "";

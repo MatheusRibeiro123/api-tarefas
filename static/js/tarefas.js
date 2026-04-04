@@ -3,7 +3,7 @@ const token = localStorage.getItem("token");
 
 // 🔹 verifica login (SEM delay, sem bug)
 if (!token) {
-  window.location.href = "login.html";
+  window.location.href = "/login";
 }
 
 // 🔹 LOGOUT
@@ -11,7 +11,7 @@ const btnLogout = document.getElementById("btn-logout");
 if (btnLogout) {
   btnLogout.addEventListener("click", () => {
     localStorage.removeItem("token");
-    window.location.href = "login.html";
+    window.location.href = "/login";
   });
 }
 
@@ -134,7 +134,7 @@ function escHtml(str) {
 // 🔹 CARREGAR
 async function carregarTarefas() {
   try {
-    const response = await fetch("http://localhost:5000/task/tarefas", {
+    const response = await fetch("/task/tarefas", {
       headers: { "Authorization": "Bearer " + token }
     });
 
@@ -149,7 +149,7 @@ async function carregarTarefas() {
     showToast("Sessão expirada.", "error");
 
     localStorage.removeItem("token");
-    setTimeout(() => window.location.href = "login.html", 1000);
+    setTimeout(() => window.location.href = "/login", 1000);
   }
 }
 
@@ -164,7 +164,7 @@ botao.addEventListener("click", async () => {
   }
 
   try {
-    const response = await fetch("http://localhost:5000/task/tarefas", {
+    const response = await fetch("/task/tarefas", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -201,7 +201,7 @@ modalCancel.addEventListener("click", () => modalOverlay.classList.remove("open"
 
 modalSave.addEventListener("click", async () => {
   try {
-    const response = await fetch(`http://localhost:5000/task/tarefas/${tarefaEditando.id}`, {
+    const response = await fetch(`/task/tarefas/${tarefaEditando.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -224,7 +224,7 @@ modalSave.addEventListener("click", async () => {
 
 // ✅ CONCLUIR
 async function concluirTarefa(id) {
-  await fetch(`http://localhost:5000/task/tarefas/${id}`, {
+  await fetch(`/task/tarefas/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -239,7 +239,7 @@ async function concluirTarefa(id) {
 
 // ❌ DELETAR
 async function deletarTarefa(id) {
-  await fetch(`http://localhost:5000/task/tarefas/${id}`, {
+  await fetch(`/task/tarefas/${id}`, {
     method: "DELETE",
     headers: { "Authorization": "Bearer " + token }
   });
