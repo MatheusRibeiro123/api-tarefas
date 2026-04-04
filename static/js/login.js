@@ -45,7 +45,7 @@ async function fazerLogin() {
 
     if (response.ok) {
       localStorage.setItem("token", data.access_token);
-      window.location.href = "/login";
+      window.location.href = "/tarefas";
     } else {
       setErro("E-mail ou senha inválidos.");
       inputSenha.value = "";
