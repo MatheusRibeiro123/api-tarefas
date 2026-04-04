@@ -127,3 +127,7 @@ Projeto estruturado com foco em backend, mas com frontend funcional integrado
 Matheus Ribeiro
 
 Imagens de demonstração das funcionalidades do sistema:
+<img width="933" height="940" alt="LOGIN" src="https://github.com/user-attachments/assets/83917430-c7d4-4569-afe9-244b3e7b079a" />
+<img width="933" height="933" alt="REGISTRAR" src="https://github.com/user-attachments/assets/b011c6f4-787a-4097-905e-8511d4408b1e" /><img width="902" height="938" alt="MINHAS TAREFAS" src="https://github.com/user-attachments/assets/e3d7aa04-babe-43db-b99a-3a2351b471c9" />
+<img width="930" height="937" alt="EDITAR TAREFAS" src="https://github.com/user-attachments/assets/7881f69b-02dc-478a-819f-1129a20f3aca" />
+
