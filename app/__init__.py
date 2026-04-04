@@ -6,7 +6,7 @@ from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from flask import render_template
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder="../templates", static_folder="../static")
 
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
     app.config["JWT_SECRET_KEY"] = "senha_teste"
