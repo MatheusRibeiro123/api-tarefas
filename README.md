@@ -1,3 +1,6 @@
+## 📸 Preview
+<img width="902" height="938" alt="MINHAS TAREFAS" src="https://github.com/user-attachments/assets/8aa6aa68-342b-4ac8-bccc-e0b9e6240c71" />
+
 📋 Aplicativo de Gerência de Tarefas
 
 Aplicação completa de gerenciamento de tarefas com autenticação de usuários, desenvolvida com Flask no backend e interface web integrada para interação.
